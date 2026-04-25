@@ -17,3 +17,10 @@ Then choose only the correct items. Wrong answers permanently decreas your curre
 
 The result screen
 <img width="1760" height="990" alt="e" src="https://github.com/user-attachments/assets/d78aae38-fa1c-4f85-a319-3c3f797da51a" />
+
+___
+todo:
+
+- add automatic score export&import to&from a .txt file
+- add a clock ticking sound in between screens
+- add proper referencing to authors of used sounds
