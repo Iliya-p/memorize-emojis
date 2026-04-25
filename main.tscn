@@ -41,6 +41,7 @@ offset_bottom = -165.0
 theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 1
 
 [node name="TimeDisplay" type="Label" parent="." unique_id=1838529915]
 offset_left = -36.0
@@ -156,12 +157,14 @@ horizontal_alignment = 1
 
 [node name="SpinBox" type="SpinBox" parent="view/NmrOfElements" unique_id=649762291]
 layout_mode = 0
-offset_left = 15.0
-offset_top = 53.0
-offset_right = 101.5
-offset_bottom = 84.0
+offset_left = 12.0
+offset_top = 55.0
+offset_right = 98.5
+offset_bottom = 86.0
 min_value = 1.0
+max_value = 64.0
 value = 7.0
+update_on_text_changed = true
 
 [node name="TimeToMemorize" type="Label" parent="view" unique_id=1557638794]
 layout_mode = 0
@@ -174,7 +177,10 @@ memorize"
 horizontal_alignment = 1
 
 [node name="SpinBox" type="SpinBox" parent="view/TimeToMemorize" unique_id=1351119134]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.030612245
+anchor_right = -0.030612245
 offset_left = 11.0
 offset_top = 55.0
 offset_right = 97.5
@@ -182,6 +188,8 @@ offset_bottom = 86.0
 min_value = 1.0
 max_value = 120.0
 value = 40.0
+update_on_text_changed = true
+metadata/_edit_use_anchors_ = true
 
 [node name="Timer" type="Timer" parent="view/TimeToMemorize" unique_id=200442475]
 one_shot = true
@@ -203,6 +211,7 @@ offset_top = 55.0
 offset_right = 84.5
 offset_bottom = 86.0
 value = 10.0
+update_on_text_changed = true
 metadata/_edit_use_anchors_ = true
 
 [node name="Timer" type="Timer" parent="view/IdleTime" unique_id=1947721796]
@@ -224,6 +233,7 @@ offset_top = 55.0
 offset_right = 97.5
 offset_bottom = 86.0
 value = 50.0
+update_on_text_changed = true
 
 [node name="Timer" type="Timer" parent="view/AnswerTime" unique_id=1014550734]
 one_shot = true

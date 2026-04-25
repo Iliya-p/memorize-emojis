@@ -25,6 +25,8 @@ func fill_emoji_list() -> void:
 
 
 func on_begin() -> void:
+	$Display.text = ""
+	set_zero_score_display()
 	$RestartButton.visible = true
 	$DoneButton.visible = true
 	$CurrentStateDisplay.text = "Memorize the items"
@@ -41,7 +43,6 @@ func on_begin() -> void:
 	# This bit adds symbols to the Display to memorize
 	fill_emoji_list()
 	emoji_list.shuffle()
-	$Display.text = ""
 	for i in $view/NmrOfElements/SpinBox.value: 
 		current_emojis.push_back(emoji_list.get(i))
 		$Display.text += emoji_list.get(i)
