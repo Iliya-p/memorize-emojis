@@ -83,6 +83,7 @@ func on_idle_timer_timeout() -> void:
 	$view/AnswerTime/Timer.start($view/AnswerTime/SpinBox.value)
 
 func on_answer_timer_timeout() -> void:
+	$DoneButton.visible = false
 	$Audio.stream = results_sound
 	$Audio.play()
 	$Display.visible = true
@@ -93,7 +94,7 @@ func on_answer_timer_timeout() -> void:
 	$Score.visible = true
 
 func on_done_button_down() -> void:
-	$DoneButton.visible = false
+	#$DoneButton.visible = false
 	
 	$view/TimeToMemorize/Timer.stop()
 	$view/IdleTime/Timer.stop()
