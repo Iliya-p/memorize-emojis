@@ -42,18 +42,6 @@ theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DisplayList" type="ItemList" parent="." unique_id=1490572475]
-visible = false
-offset_left = -456.0
-offset_top = -294.0
-offset_right = 456.0
-offset_bottom = -82.0
-theme_override_font_sizes/font_size = 32
-allow_search = false
-wraparound_items = false
-max_columns = 23
-icon_mode = 0
-
 [node name="TimeDisplay" type="Label" parent="." unique_id=1838529915]
 offset_left = -36.0
 offset_top = -164.0

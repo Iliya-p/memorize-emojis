@@ -7,28 +7,22 @@ var emoji_list: Array[String] = []
 var current_emojis: Array[String] = []
 var elapsed_time: float = 0.0
 
-var error_sound = preload("res://error.ogg")
-var success_sound = preload("res://success.wav")
-var results_sound = preload("res://results.wav")
+var error_sound = preload("res://sounds/error.ogg")
+var success_sound = preload("res://sounds/success.wav")
+var results_sound = preload("res://sounds/results.wav")
 
 func fill_emoji_list() -> void:
 	emoji_list.clear()
+	#fills the emoji_list with symbols if according checkbox is pressed
 	if $view/EnableEmoji.button_pressed:
 		emoji_list.append_array(allowed_emojis.rsplit())
-		#for icon in allowed_emojis:
-			#emoji_list.push_back(icon)
 	if $view/EnableLetters.button_pressed:
 		emoji_list.append_array(letters.rsplit())
-		#for icon in letters:
-			#emoji_list.push_back(icon)
 	if $view/EnableNumbers.button_pressed:
 		emoji_list.append_array(numbers.rsplit())
-		#for icon in numbers:
-			#emoji_list.push_back(icon)
 	if $view/EnableCustom.button_pressed:
 		emoji_list.append_array($view/CustomSymbols/TextEdit.text.rsplit())
-		#for icon in $view/CustomSymbols/TextEdit.text:
-			#emoji_list.push_back(icon)
+
 
 func on_begin() -> void:
 	$RestartButton.visible = true
@@ -44,30 +38,29 @@ func on_begin() -> void:
 	
 	$Display.visible = true
 	
-	# This bit adds symbols to display to memorize
+	# This bit adds symbols to the Display to memorize
 	fill_emoji_list()
 	emoji_list.shuffle()
 	$Display.text = ""
-	#$DisplayList.clear()
 	for i in $view/NmrOfElements/SpinBox.value: 
 		current_emojis.push_back(emoji_list.get(i))
-		$Display.text += emoji_list.get(i) 
-		#$DisplayList.add_item(emoji_list.get(i),null,false)
+		$Display.text += emoji_list.get(i)
+	#end
 	
-	# This bit adds symbols to choosing panel
+	# This bit adds symbols to choosing panel (IconList)
 	emoji_list.shuffle()
 	for icon in emoji_list:
 		$IconList.add_item(icon)
+	#end
 	
+	#Start Memorize Timer
 	$view/TimeToMemorize/Timer.start($view/TimeToMemorize/SpinBox.value)
-	#is_countdown_running_qmrk = true
 	
 
 func on_time_to_memorize_timeout() -> void:
 	$CurrentStateDisplay.text = "Wait"
 	$view/IdleTime/Timer.start($view/IdleTime/SpinBox.value)
 	$Display.visible = false
-	#$DisplayList.visible = false
 
 
 func on_idle_timer_timeout() -> void:
@@ -80,15 +73,12 @@ func on_answer_timer_timeout() -> void:
 	$Audio.stream = results_sound
 	$Audio.play()
 	$Display.visible = true
-	#$DisplayList.visible = true
 	var output_time = int(($view/AnswerTime/SpinBox.value - final_time)*100)/100.0
 	var output_string: String = "time: " + var_to_str(output_time) + " | precision: " + $ScoreDisplay.text
 	$Score/List.add_item(output_string)
 	$Score.visible = true
 
 func on_done_button_down() -> void:
-	#$DoneButton.visible = false
-	
 	$view/TimeToMemorize/Timer.stop()
 	$view/IdleTime/Timer.stop()
 	$view/AnswerTime/Timer.stop()
@@ -104,13 +94,7 @@ func _ready() -> void:
 	$view/AnswerTime/Timer.timeout.connect(on_answer_timer_timeout)
 	$RestartButton.button_down.connect(on_restart)
 	$DoneButton.button_down.connect(on_done_button_down)
-	
-	#$ScoreDisplay.text = var_to_str(answered_emojis) + "/" + var_to_str(int($NmrOfElements/SpinBox.value))
 	set_zero_score_display()
-	
-	
-	
-	
 	#end
 
 
@@ -161,19 +145,22 @@ func _process(_delta: float) -> void:
 	var display_value = $view/IdleTime/Timer.time_left + $view/TimeToMemorize/Timer.time_left + $view/AnswerTime/Timer.time_left
 	$TimeDisplay.text = var_to_str(int(display_value*100)/100.0)
 	
-	if !$view/AnswerTime/Timer.is_stopped():
-		#if $IconList.is_anything_selected():
-			#var item = $IconList.get_selected_items().get(0)
-		for item in $IconList.get_selected_items():
-			if current_emojis.has($IconList.get_item_text(item)):
-				emit_signal("correct_answer")
-			else:
-				emit_signal("wrong_answer")
-			$IconList.set_item_disabled(item, true)
-			$IconList.deselect_all()
-			$ScoreDisplay.text = var_to_str(answered_emojis) + "/" + var_to_str(int($view/NmrOfElements/SpinBox.value))
-			
-			if nmr_of_correct_answers >= $view/NmrOfElements/SpinBox.value:
-				final_time = $view/AnswerTime/Timer.time_left
-				$view/AnswerTime/Timer.stop()
-				$view/AnswerTime/Timer.timeout.emit()
+	
+	# all further code executed only if Answer Timer isn't stopped
+	if $view/AnswerTime/Timer.is_stopped(): return
+	# if Answer Timer is stopped - code ends here
+	
+	
+	for item in $IconList.get_selected_items():
+		if current_emojis.has($IconList.get_item_text(item)):
+			emit_signal("correct_answer")
+		else:
+			emit_signal("wrong_answer")
+		$IconList.set_item_disabled(item, true)
+		$IconList.deselect_all()
+		$ScoreDisplay.text = var_to_str(answered_emojis) + "/" + var_to_str(int($view/NmrOfElements/SpinBox.value))
+		
+		if nmr_of_correct_answers >= $view/NmrOfElements/SpinBox.value:
+			final_time = $view/AnswerTime/Timer.time_left
+			$view/AnswerTime/Timer.stop()
+			$view/AnswerTime/Timer.timeout.emit()
